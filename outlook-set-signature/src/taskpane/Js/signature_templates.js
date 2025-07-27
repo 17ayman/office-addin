@@ -102,6 +102,7 @@ function get_template_B_str(user_info) {
                "<img src='https://i.imgur.com/BzsOBHT.png' " +
                     "alt='Website' style='height: 16px; vertical-align: middle; margin-right: 6px;'/>" +
                "<a href='https://www.edamasolutions.com' " +
+                  "target='_blank' rel='noopener noreferrer' " +
                   "style='color: #0DA57C; text-decoration: none;'>" +
                  "www.edamasolutions.com" +
                "</a>" +
