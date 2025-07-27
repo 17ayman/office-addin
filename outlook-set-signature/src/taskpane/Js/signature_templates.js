@@ -9,7 +9,7 @@ function get_template_A_str(user_info)
     str += user_info.greeting + "<br/>";
   }
 
-let str = "";
+
 str += "<table cellpadding='0' cellspacing='0' style='font-family: Arial, sans-serif; font-size: 14px; line-height: 20px; width: 600px;'>";
 str += "  <tr>";
 str += "    <td style='vertical-align: middle; padding-right: 20px;'>";
