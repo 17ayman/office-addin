@@ -63,7 +63,7 @@ function get_template_A_str(user_info) {
   str +=     "</td>";
   str +=     "<td style='width: 3px; background-color: #0DA57C;'>&nbsp;</td>";
   str +=     "<td style='vertical-align: middle; padding-left: 20px;'>" +
-               "<img src='https://i.imgur.com/IcG7VHR.png' " +
+               "<img src='https://raw.githubusercontent.com/17ayman/office-addin/refs/heads/Eda/edama_logo_reveal.gif' " +
                     "alt='Edama Logo' style='height: 120px;'/>" +
              "</td>";
   str +=   "</tr>";
