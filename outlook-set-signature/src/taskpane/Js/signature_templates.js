@@ -1,33 +1,44 @@
 // Copyright (c) Microsoft Corporation.
 // Licensed under the MIT License.
 
-function get_template_A_str(user_info)
-{
-  let str = "";
-  if (is_valid_data(user_info.greeting))
-  {
-    str += user_info.greeting + "<br/>";
-  }
+function is_valid_data(data) {
+    return data && data.trim() !== "";
+}
 
-
+let str = "";
 str += "<table cellpadding='0' cellspacing='0' style='font-family: Arial, sans-serif; font-size: 14px; line-height: 20px; width: 600px;'>";
 str += "  <tr>";
 str += "    <td style='vertical-align: middle; padding-right: 20px;'>";
+
+// Display Name (Required)
 str += "      <div style='font-size: 16px; font-weight: bold; color: #222;'>" + user_info.displayName + "</div>";
-str += "      <div style='font-size: 13px; color: #666;'>" + user_info.title + " | Edama, KSA.</div>";
+
+// Title (Optional)
+str += is_valid_data(user_info.title) ? "      <div style='font-size: 13px; color: #666;'>" + user_info.title + " | Edama, KSA.</div>" : "";
 str += "      <br>";
-str += "      <div style='margin-bottom: 6px;'>";
-str += "        <img src='https://i.imgur.com/3qA3vEr.png' alt='Email' style='height: 12px; vertical-align: middle; margin-right: 6px;'>";
-str += "        <a href='mailto:" + user_info.email + "' style='color: #0DA57C; text-decoration: none;'>" + user_info.email + "</a>";
-str += "      </div>";
+
+// Email (Optional)
+if (is_valid_data(user_info.email)) {
+    str += "      <div style='margin-bottom: 6px;'>";
+    str += "        <img src='https://i.imgur.com/3qA3vEr.png' alt='Email' style='height: 12px; vertical-align: middle; margin-right: 6px;'>";
+    str += "        <a href='mailto:" + user_info.email + "' style='color: #0DA57C; text-decoration: none;'>" + user_info.email + "</a>";
+    str += "      </div>";
+}
+
+// Website (Always shown)
 str += "      <div style='margin-bottom: 6px;'>";
 str += "        <img src='https://i.imgur.com/BzsOBHT.png' alt='Website' style='height: 16px; vertical-align: middle; margin-right: 6px;'>";
 str += "        <a href='https://www.edamasolutions.com' style='color: #0DA57C; text-decoration: none;'>www.edamasolutions.com</a>";
 str += "      </div>";
-str += "      <div>";
-str += "        <img src='https://i.imgur.com/T20jsOf.png' alt='Phone' style='height: 16px; vertical-align: middle; margin-right: 6px;'>";
-str += "        <a href='tel:" + user_info.mobilePhone + "' style='color: #0DA57C; text-decoration: none;'>" + user_info.mobilePhone + "</a>";
-str += "      </div>";
+
+// Phone (Optional)
+if (is_valid_data(user_info.mobilePhone)) {
+    str += "      <div>";
+    str += "        <img src='https://i.imgur.com/T20jsOf.png' alt='Phone' style='height: 16px; vertical-align: middle; margin-right: 6px;'>";
+    str += "        <a href='tel:" + user_info.mobilePhone + "' style='color: #0DA57C; text-decoration: none;'>" + user_info.mobilePhone + "</a>";
+    str += "      </div>";
+}
+
 str += "    </td>";
 str += "    <td style='width: 3px; background-color: #0DA57C;'>&nbsp;</td>";
 str += "    <td style='vertical-align: middle; padding-left: 20px;'>";
@@ -35,6 +46,7 @@ str += "      <img src='https://i.imgur.com/IcG7VHR.png' alt='Edama Logo' style=
 str += "    </td>";
 str += "  </tr>";
 str += "</table>";
+
 
 
   return str;
