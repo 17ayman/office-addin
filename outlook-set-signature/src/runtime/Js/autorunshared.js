@@ -38,15 +38,14 @@ function checkSignature(eventObj) {
       );
     } else {
       // Appointment item. Just use newMail pattern
-      let user_info = JSON.parse(user_info_str);
       insert_auto_signature("newMail", user_info, eventObj);
     }
   }
 }
 
 /**
- * For Outlook on Windows and on Mac only. Insert signature into appointment or message.
- * Outlook on Windows and on Mac can use setSignatureAsync method on appointments and messages.
+ * Insert signature into appointment or message.
+ * Uses setSignatureAsync method on appointments and messages.
  * @param {*} compose_type The compose type (reply, forward, newMail)
  * @param {*} user_info Information details about the user
  * @param {*} eventObj Office event object
@@ -58,50 +57,22 @@ function insert_auto_signature(compose_type, user_info, eventObj) {
 }
 
 /**
- * 
+ * Add the signature into the email body.
  * @param {*} signatureDetails object containing:
- *  "signature": The signature HTML of the template,
-    "logoBase64": The base64 encoded logo image,
-    "logoFileName": The filename of the logo image
+ *  "signature": The signature HTML of the template
  * @param {*} eventObj 
- * @param {*} signatureImageBase64 
  */
-function addTemplateSignature(signatureDetails, eventObj, signatureImageBase64) {
-  if (is_valid_data(signatureDetails.logoBase64) === true) {
-    //If a base64 image was passed we need to attach it.
-    Office.context.mailbox.item.addFileAttachmentFromBase64Async(
-      signatureDetails.logoBase64,
-      signatureDetails.logoFileName,
-      {
-        isInline: true,
-      },
-      function (result) {
-        //After image is attached, insert the signature
-        Office.context.mailbox.item.body.setSignatureAsync(
-          signatureDetails.signature,
-          {
-            coercionType: "html",
-            asyncContext: eventObj,
-          },
-          function (asyncResult) {
-            asyncResult.asyncContext.completed();
-          }
-        );
-      }
-    );
-  } else {
-    //Image is not embedded, or is referenced from template HTML
-    Office.context.mailbox.item.body.setSignatureAsync(
-      signatureDetails.signature,
-      {
-        coercionType: "html",
-        asyncContext: eventObj,
-      },
-      function (asyncResult) {
-        asyncResult.asyncContext.completed();
-      }
-    );
-  }
+function addTemplateSignature(signatureDetails, eventObj) {
+  Office.context.mailbox.item.body.setSignatureAsync(
+    signatureDetails.signature,
+    {
+      coercionType: "html",
+      asyncContext: eventObj,
+    },
+    function (asyncResult) {
+      asyncResult.asyncContext.completed();
+    }
+  );
 }
 
 /**
@@ -135,10 +106,11 @@ function get_template_name(compose_type) {
 }
 
 /**
- * Gets HTML signature in requested template format for given user
- * @param {\} template_name Which template format to use (A,B,C)
+ * Gets signature HTML in requested template format for given user
+ * @param {*} template_name Which template format to use (A,B,C)
  * @param {*} user_info Information details about the user
- * @returns HTML signature in requested template format
+ * @returns Object containing:
+ *  "signature": The signature HTML of the template
  */
 function get_signature_info(template_name, user_info) {
   if (template_name === "templateB") return get_template_B_info(user_info);
@@ -157,114 +129,138 @@ function get_command_id() {
   return "MRCS_TpBtn0";
 }
 
-/**
- * Gets HTML string for template A
- * Embeds the signature logo image into the HTML string
- * @param {*} user_info Information details about the user
- * @returns Object containing:
- *  "signature": The signature HTML of template A,
-    "logoBase64": The base64 encoded logo image,
-    "logoFileName": The filename of the logo image
- */
+/* -------------------------------
+   NEW SIGNATURE TEMPLATES (Edama Style)
+---------------------------------*/
+
 function get_template_A_info(user_info) {
-  const logoFileName = "sample-logo.png";
-  let str = "";
-  if (is_valid_data(user_info.greeting)) {
-    str += user_info.greeting + "<br/>";
-  }
-
-  str += "<table>";
-  str += "<tr>";
-  // Embed the logo using <img src='cid:...
-  str +=
-    "<td style='border-right: 1px solid #000000; padding-right: 5px;'><img src='cid:" +
-    logoFileName +
-    "' alt='MS Logo' width='24' height='24' /></td>";
-  str += "<td style='padding-left: 5px;'>";
-  str += "<strong>" + user_info.name + "</strong>";
-  str += is_valid_data(user_info.pronoun) ? "&nbsp;" + user_info.pronoun : "";
-  str += "<br/>";
-  str += is_valid_data(user_info.job) ? user_info.job + "<br/>" : "";
-  str += user_info.email + "<br/>";
-  str += is_valid_data(user_info.phone) ? user_info.phone + "<br/>" : "";
-  str += "</td>";
-  str += "</tr>";
-  str += "</table>";
-
-  // return object with signature HTML, logo image base64 string, and filename to reference it with.
   return {
-    signature: str,
-    logoBase64:
-      "iVBORw0KGgoAAAANSUhEUgAAACIAAAAiCAYAAAA6RwvCAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsQAAA7EAZUrDhsAAAEeSURBVFhHzdhBEoIwDIVh4EoeQJd6YrceQM+kvo5hQNokLymO/4aF0/ajlBl1fL4bEp0uj3K9XQ/lGi0MEcB3UdD0uVK1EEj7TIuGeBaKYCgIswCLcUMid8mMcUEiCMk71oRYE+Etsd4UD0aFeBBSFtOEMAgpg6lCIggpitlAMggpgllBeiAkFjNDeiIkBlMgeyAkL6Z6WJdlEJJnjvF4vje/BvRALNN23tyRXzVpd22dHSZtLhjMHemB8cxRINZZyGCssbL2vCN7YLwItHo0PTEMAm3OSA8Mi0DVw5rBRBCoCkERTBSBmhDEYDII5PqlZy1iZSGQuiOSZ6JW3rEuCIpgmDFuCGImZuEUBHkWiOweDUHaQhEE+pM/aobhBZaOpYLJeeeoAAAAAElFTkSuQmCC",
-    logoFileName: logoFileName,
+    signature: get_template_A_str(user_info),
+    logoBase64: null,
+    logoFileName: null
   };
 }
 
-/**
- * Gets HTML string for template B
- * References the signature logo image from the HTML
- * @param {*} user_info Information details about the user
- * @returns Object containing:
- *  "signature": The signature HTML of template B,
-    "logoBase64": null since this template references the image and does not embed it ,
-    "logoFileName": null since this template references the image and does not embed it
- */
 function get_template_B_info(user_info) {
-  let str = "";
-  if (is_valid_data(user_info.greeting)) {
-    str += user_info.greeting + "<br/>";
-  }
-
-  str += "<table>";
-  str += "<tr>";
-  // Reference the logo using a URI to the web server <img src='https://...
-  str +=
-    "<td style='border-right: 1px solid #000000; padding-right: 5px;'><img src='https://raw.githubusercontent.com/17ayman/office-addin/refs/heads/Eda/EdamaEmailLogo2.png' alt='Logo' /></td>";
-  str += "<td style='padding-left: 5px;'>";
-  str += "<strong>" + user_info.name + "</strong>";
-  str += is_valid_data(user_info.pronoun) ? "&nbsp;" + user_info.pronoun : "";
-  str += "<br/>";
-  str += user_info.email + "<br/>";
-  str += is_valid_data(user_info.phone) ? user_info.phone + "<br/>" : "";
-  str += "</td>";
-  str += "</tr>";
-  str += "</table>";
-
   return {
-    signature: str,
+    signature: get_template_B_str(user_info),
     logoBase64: null,
-    logoFileName: null,
+    logoFileName: null
   };
 }
 
-/**
- * Gets HTML string for template C
- * @param {*} user_info Information details about the user
- * @returns Object containing:
- *  "signature": The signature HTML of template C,
-    "logoBase64": null since there is no image,
-    "logoFileName": null since there is no image
- */
 function get_template_C_info(user_info) {
+  return {
+    signature: get_template_C_str(user_info),
+    logoBase64: null,
+    logoFileName: null
+  };
+}
+
+/* --- Functions copied from signature_templates.js --- */
+
+function get_template_A_str(user_info) {
   let str = "";
+
   if (is_valid_data(user_info.greeting)) {
     str += user_info.greeting + "<br/>";
   }
 
-  str += user_info.name;
+  str += "<table cellpadding='0' cellspacing='0' " +
+         "style='font-family: Arial, sans-serif; font-size: 14px; line-height: 20px; width: 600px;'>";
+  str += "<tr>";
+  str += "<td style='vertical-align: middle; padding-right: 20px;'>";
 
-  return {
-    signature: str,
-    logoBase64: null,
-    logoFileName: null,
-  };
+  str += "<div style='font-size: 16px; font-weight: bold; color: #222;'>" + user_info.name + "</div>";
+
+  if (is_valid_data(user_info.job)) {
+    str += "<div style='font-size: 13px; color: #666;'>" +
+           user_info.job + " | Edama, KSA." +
+           "</div>";
+  }
+
+  str += "<br>";
+
+  if (is_valid_data(user_info.email)) {
+    str += "<div style='margin-bottom: 6px;'>" +
+           "<img src='https://17ayman.github.io/office-addin/EmailLogo.png' " +
+           "alt='Email' style='height: 12px; vertical-align: middle; margin-right: 6px;'/>" +
+           "<a href='mailto:" + user_info.email + "' style='color: #0DA57C; text-decoration: none;'>" +
+           user_info.email +
+           "</a></div>";
+  }
+
+  str += "<div style='margin-bottom: 6px;'>" +
+         "<img src='https://17ayman.github.io/office-addin/WebsiteLogo.png' " +
+         "alt='Website' style='height: 16px; vertical-align: middle; margin-right: 6px;'/>" +
+         "<a href='https://www.edamasolutions.com' style='color: #0DA57C; text-decoration: none;'>" +
+         "www.edamasolutions.com" +
+         "</a></div>";
+
+  if (is_valid_data(user_info.phone)) {
+    str += "<div>" +
+           "<img src='https://17ayman.github.io/office-addin/PhoneLogo.png' " +
+           "alt='Phone' style='height: 16px; vertical-align: middle; margin-right: 6px;'/>" +
+           "<a href='tel:" + user_info.phone + "' style='color: #0DA57C; text-decoration: none;'>" +
+           user_info.phone +
+           "</a></div>";
+  }
+
+  str += "</td>";
+  str += "<td style='width: 3px; background-color: #0DA57C;'>&nbsp;</td>";
+  str += "<td style='vertical-align: middle; padding-left: 20px;'>" +
+         "<img src='https://17ayman.github.io/office-addin/Edalo.png' alt='Edama Logo' style='height: 120px;'/>" +
+         "</td>";
+  str += "</tr></table>";
+
+  return str;
 }
 
-/**
- * Validates if str parameter contains text.
- * @param {*} str String to validate
- * @returns true if string is valid; otherwise, false.
- */
+function get_template_B_str(user_info) {
+  let str = "<table cellpadding='0' cellspacing='0' " +
+            "style='font-family: Arial, sans-serif; font-size: 14px; line-height: 20px; width: 600px;'>";
+  str += "<tr><td style='vertical-align: middle; padding-right: 20px;'>";
+
+  str += "<div style='font-size: 16px; font-weight: bold; color: #222;'>" + user_info.name + "</div><br>";
+
+  if (is_valid_data(user_info.email)) {
+    str += "<div style='margin-bottom: 6px;'>" +
+           "<img src='https://17ayman.github.io/office-addin/EmailLogo.png' alt='Email' style='height: 12px; margin-right: 6px;'/>" +
+           "<a href='mailto:" + user_info.email + "' style='color: #0DA57C; text-decoration: none;'>" +
+           user_info.email +
+           "</a></div>";
+  }
+
+  str += "<div style='margin-bottom: 6px;'>" +
+         "<img src='https://17ayman.github.io/office-addin/WebsiteLogo.png' alt='Website' style='height: 16px; margin-right: 6px;'/>" +
+         "<a href='https://www.edamasolutions.com' style='color: #0DA57C; text-decoration: none;'>" +
+         "www.edamasolutions.com" +
+         "</a></div>";
+
+  if (is_valid_data(user_info.phone)) {
+    str += "<div>" +
+           "<img src='https://17ayman.github.io/office-addin/PhoneLogo.png' alt='Phone' style='height: 16px; margin-right: 6px;'/>" +
+           "<a href='tel:" + user_info.phone + "' style='color: #0DA57C; text-decoration: none;'>" +
+           user_info.phone +
+           "</a></div>";
+  }
+
+  str += "</td>";
+  str += "<td style='width: 3px; background-color: #0DA57C;'>&nbsp;</td>";
+  str += "<td style='vertical-align: middle; padding-left: 20px;'>" +
+         "<img src='https://17ayman.github.io/office-addin/Edalo.png' alt='Edama Logo' style='height: 120px;'/>" +
+         "</td></tr></table>";
+
+  return str;
+}
+
+function get_template_C_str(user_info) {
+  return "<div style='font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; color: #222;'>" +
+         user_info.name +
+         "</div>";
+}
+
+/* Utility */
 function is_valid_data(str) {
   return str !== null && str !== undefined && str !== "";
 }
