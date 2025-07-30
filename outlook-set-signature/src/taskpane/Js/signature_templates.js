@@ -29,7 +29,7 @@ function get_template_A_str(user_info) {
   // Email (optional)
   if (is_valid_data(user_info.email)) {
     str +=   "<div style='margin-bottom: 6px;'>" +
-               "<img src='https://i.imgur.com/3qA3vEr.png' " +
+               "<img src='https://17ayman.github.io/office-addin/EmailLogo.png' " +
                     "alt='Email' style='height: 12px; vertical-align: middle; margin-right: 6px;'/>" +
                "<a href='mailto:" + user_info.email + "' " +
                   "style='color: #0DA57C; text-decoration: none;'>" +
@@ -40,7 +40,7 @@ function get_template_A_str(user_info) {
 
   // Website (always)
   str +=       "<div style='margin-bottom: 6px;'>" +
-               "<img src='https://i.imgur.com/BzsOBHT.png' " +
+               "<img src='https://17ayman.github.io/office-addin/WebsiteLogo.png' " +
                     "alt='Website' style='height: 16px; vertical-align: middle; margin-right: 6px;'/>" +
                "<a href='https://www.edamasolutions.com' " +
                   "style='color: #0DA57C; text-decoration: none;'>" +
@@ -51,7 +51,7 @@ function get_template_A_str(user_info) {
   // Phone (optional)
   if (is_valid_data(user_info.phone)) {
     str +=   "<div>" +
-               "<img src='https://i.imgur.com/T20jsOf.png' " +
+               "<img src='https://17ayman.github.io/office-addin/PhoneLogo.png' " +
                     "alt='Phone' style='height: 16px; vertical-align: middle; margin-right: 6px;'/>" +
                "<a href='tel:" + user_info.phone + "' " +
                   "style='color: #0DA57C; text-decoration: none;'>" +
@@ -89,7 +89,7 @@ function get_template_B_str(user_info) {
 
   if (is_valid_data(user_info.email)) {
     str +=   "<div style='margin-bottom: 6px;'>" +
-               "<img src='https://i.imgur.com/3qA3vEr.png' " +
+               "<img src='https://17ayman.github.io/office-addin/EmailLogo.png' " +
                     "alt='Email' style='height: 12px; vertical-align: middle; margin-right: 6px;'/>" +
                "<a href='mailto:" + user_info.email + "' " +
                   "style='color: #0DA57C; text-decoration: none;'>" +
@@ -99,7 +99,7 @@ function get_template_B_str(user_info) {
   }
 
   str +=       "<div style='margin-bottom: 6px;'>" +
-               "<img src='https://i.imgur.com/BzsOBHT.png' " +
+               "<img src='https://17ayman.github.io/office-addin/WebsiteLogo.png' " +
                     "alt='Website' style='height: 16px; vertical-align: middle; margin-right: 6px;'/>" +
                "<a href='https://www.edamasolutions.com' " +
                   "style='color: #0DA57C; text-decoration: none;'>" +
@@ -109,7 +109,7 @@ function get_template_B_str(user_info) {
 
   if (is_valid_data(user_info.phone)) {
     str +=   "<div>" +
-               "<img src='https://i.imgur.com/T20jsOf.png' " +
+               "<img src='https://17ayman.github.io/office-addin/PhoneLogo.png' " +
                     "alt='Phone' style='height: 16px; vertical-align: middle; margin-right: 6px;'/>" +
                "<a href='tel:" + user_info.phone + "' " +
                   "style='color: #0DA57C; text-decoration: none;'>" +
@@ -121,7 +121,7 @@ function get_template_B_str(user_info) {
   str +=     "</td>";
   str +=     "<td style='width: 3px; background-color: #0DA57C;'>&nbsp;</td>";
   str +=     "<td style='vertical-align: middle; padding-left: 20px;'>" +
-               "<img src='https://i.imgur.com/IcG7VHR.png' " +
+               "<img src='https://17ayman.github.io/office-addin/EdamaEmailLogo2.png' " +
                     "alt='Edama Logo' style='height: 120px;'/>" +
              "</td>";
   str +=   "</tr>";
