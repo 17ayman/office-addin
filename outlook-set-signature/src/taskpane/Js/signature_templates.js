@@ -8,7 +8,7 @@ function get_template_A_str(user_info) {
 
   // start Edama-style table
   str += "<table cellpadding='0' cellspacing='0' " +
-         "style='font-family: Arial, sans-serif; font-size: 14px; line-height: 20px; width: 600px;'>";
+         "style='font-family: Aptos, sans-serif; font-size: 14px; line-height: 20px; width: 600px;'>";
   str +=   "<tr>";
   str +=     "<td style='vertical-align: middle; padding-right: 20px;'>";
 
@@ -77,7 +77,7 @@ function get_template_B_str(user_info) {
   let str = "";
 
   str += "<table cellpadding='0' cellspacing='0' " +
-         "style='font-family: Arial, sans-serif; font-size: 14px; line-height: 20px; width: 600px;'>";
+         "style='font-family: Aptos, sans-serif; font-size: 14px; line-height: 20px; width: 600px;'>";
   str +=   "<tr>";
   str +=     "<td style='vertical-align: middle; padding-right: 20px;'>";
 
@@ -132,7 +132,7 @@ function get_template_B_str(user_info) {
 
 function get_template_C_str(user_info) {
   // just the name in bold
-  return "<div style='font-family: Arial, sans-serif; font-size: 16px; font-weight: bold; color: #222;'>" +
+  return "<div style='font-family: Aptos, sans-serif; font-size: 16px; font-weight: bold; color: #222;'>" +
            user_info.name +
          "</div>";
 }
