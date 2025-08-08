@@ -4,3 +4,5 @@ https://www.base64-image.de/
 
 
 autorunshared.js  <<<< Link for edit the auto signature
+signature_templates.js   <<<<< Link for edit the signature
+
