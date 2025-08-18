@@ -8,7 +8,7 @@ function get_template_A_str(user_info) {
 
   // start Edama-style table
   str += "<table cellpadding='0' cellspacing='0' " +
-         "style='font-family: Aptos, sans-serif; font-size: 14px; line-height: 20px; width: 600px;'>";
+         "style='font-family: Arial, sans-serif; font-size: 14px; line-height: 20px; width: 600px;'>";
   str +=   "<tr>";
   str +=     "<td style='vertical-align: middle; padding-right: 20px;'>";
 
@@ -63,7 +63,7 @@ function get_template_A_str(user_info) {
   str +=     "</td>";
   str +=     "<td style='width: 3px; background-color: #0DA57C;'>&nbsp;</td>";
   str +=     "<td style='vertical-align: middle; padding-left: 20px;'>" +
-               "<img src='https://17ayman.github.io/office-addin/Edalo.png' " +
+               "<img src='https://images.squarespace-cdn.com/content/5d0617a7f6e9d10001edbd20/eef93179-6eeb-488c-8f21-f1e268953314/EdamaELogo.png?content-type=image%2Fpng' " +
                     "alt='Edama Logo' style='height: 120px;'/>" +
              "</td>";
   str +=   "</tr>";
